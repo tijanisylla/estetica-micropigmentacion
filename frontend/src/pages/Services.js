@@ -2,26 +2,16 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useLanguage } from '../context/LanguageContext';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { Sparkles, HandMetal, Footprints, Eye, Smile, Scissors } from 'lucide-react';
+import { Sparkles, Hand, Footprints, Eye, Smile, Scissors } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
-
-const categoryIcons = {
-  manicuras: HandMetal,
-  pedicuras: Footprints,
-  pestanas: Eye,
-  facial: Smile,
-  depilacion: Scissors,
-  micropigmentacion: Sparkles,
-};
 
 const Services = () => {
   const { language, t } = useLanguage();
   const [services, setServices] = useState({});
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('manicuras');
+  const [activeCategory, setActiveCategory] = useState('manicuras');
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -37,32 +27,29 @@ const Services = () => {
     fetchServices();
   }, []);
 
-  const ServiceItem = ({ item, index }) => (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.05 }}
-      className="flex items-center justify-between py-4 border-b border-cream-200 last:border-0 group hover:bg-cream-100/50 px-4 -mx-4 transition-colors"
-    >
-      <span className="text-brown group-hover:text-gold transition-colors">
-        {language === 'es' ? item.name_es : item.name_en}
-      </span>
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-brown-light">· · · · · · ·</span>
-        <span className="text-gold font-medium text-lg">{item.price}€</span>
-      </div>
-    </motion.div>
-  );
+  const getCategoryIcon = (cat) => {
+    const icons = {
+      manicuras: Hand,
+      pedicuras: Footprints,
+      pestanas: Eye,
+      facial: Smile,
+      depilacion: Scissors,
+      micropigmentacion: Sparkles,
+    };
+    return icons[cat] || Sparkles;
+  };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-cream">
         <div className="animate-spin rounded-full h-12 w-12 border-4 border-gold border-t-transparent"></div>
       </div>
     );
   }
 
   const categories = Object.keys(services);
+  const currentService = services[activeCategory];
+  const Icon = getCategoryIcon(activeCategory);
 
   return (
     <div className="min-h-screen bg-cream" data-testid="services-page">
@@ -79,7 +66,7 @@ const Services = () => {
             transition={{ duration: 0.6 }}
           >
             <span className="text-gold font-accent text-base tracking-widest uppercase">
-              {t('Rosa Pérez', 'Rosa Pérez')}
+              Rosa Pérez
             </span>
             <h1 className="font-heading text-5xl md:text-6xl text-brown mt-3 mb-4">
               {t('Nuestros Servicios', 'Our Services')}
@@ -98,60 +85,73 @@ const Services = () => {
       {/* Services */}
       <section className="py-16 md:py-24">
         <div className="max-w-5xl mx-auto px-4 md:px-8">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="flex flex-wrap justify-center gap-2 mb-12 bg-transparent h-auto p-0" data-testid="service-tabs">
-              {categories.map((category) => {
-                const Icon = categoryIcons[category] || Sparkles;
-                const service = services[category];
-                return (
-                  <TabsTrigger
-                    key={category}
-                    value={category}
-                    className="px-6 py-3 rounded-full border border-cream-300 data-[state=active]:bg-gold data-[state=active]:text-white data-[state=active]:border-gold transition-all duration-300 flex items-center gap-2"
-                    data-testid={`tab-${category}`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span className="hidden sm:inline">
-                      {language === 'es' ? service.title_es : service.title_en}
-                    </span>
-                  </TabsTrigger>
-                );
-              })}
-            </TabsList>
-
+          {/* Category Tabs */}
+          <div className="flex flex-wrap justify-center gap-2 mb-12" data-testid="service-tabs">
             {categories.map((category) => {
               const service = services[category];
-              const Icon = categoryIcons[category] || Sparkles;
+              const CatIcon = getCategoryIcon(category);
               return (
-                <TabsContent key={category} value={category} className="mt-0">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="bg-white rounded-2xl shadow-sm p-8 md:p-12"
-                    data-testid={`service-content-${category}`}
-                  >
-                    <div className="flex items-center gap-4 mb-8">
-                      <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center">
-                        <Icon className="w-6 h-6 text-gold" />
-                      </div>
-                      <div>
-                        <h2 className="font-heading text-3xl text-brown">
-                          {language === 'es' ? service.title_es : service.title_en}
-                        </h2>
-                        <div className="gold-line w-16 mt-2"></div>
-                      </div>
-                    </div>
-                    <div className="space-y-0">
-                      {service.items.map((item, index) => (
-                        <ServiceItem key={index} item={item} index={index} />
-                      ))}
-                    </div>
-                  </motion.div>
-                </TabsContent>
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-4 py-2 rounded-full border transition-all duration-300 flex items-center gap-2 text-sm ${
+                    activeCategory === category
+                      ? 'bg-gold text-white border-gold'
+                      : 'border-cream-300 text-brown hover:border-gold hover:text-gold'
+                  }`}
+                  data-testid={`tab-${category}`}
+                >
+                  <CatIcon className="w-4 h-4" />
+                  <span className="hidden sm:inline">
+                    {language === 'es' ? service.title_es : service.title_en}
+                  </span>
+                </button>
               );
             })}
-          </Tabs>
+          </div>
+
+          {/* Service Content */}
+          {currentService && (
+            <motion.div
+              key={activeCategory}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="bg-white rounded-2xl shadow-sm p-8 md:p-12"
+              data-testid={`service-content-${activeCategory}`}
+            >
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center">
+                  <Icon className="w-6 h-6 text-gold" />
+                </div>
+                <div>
+                  <h2 className="font-heading text-3xl text-brown">
+                    {language === 'es' ? currentService.title_es : currentService.title_en}
+                  </h2>
+                  <div className="gold-line w-16 mt-2"></div>
+                </div>
+              </div>
+              <div className="space-y-0">
+                {currentService.items.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    className="flex items-center justify-between py-4 border-b border-cream-200 last:border-0 group hover:bg-cream-100/50 px-4 -mx-4 transition-colors"
+                  >
+                    <span className="text-brown group-hover:text-gold transition-colors">
+                      {language === 'es' ? item.name_es : item.name_en}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-brown-light hidden sm:inline">· · · · ·</span>
+                      <span className="text-gold font-medium text-lg">{item.price}€</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
 
           {/* CTA */}
           <motion.div
