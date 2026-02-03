@@ -7,25 +7,35 @@ import { Sparkles } from 'lucide-react';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+const categoryLabels = {
+  manicuras: { es: 'Manicuras', en: 'Manicures' },
+  pedicuras: { es: 'Pedicuras', en: 'Pedicures' },
+  pestanas: { es: 'Pestañas', en: 'Eyelashes' },
+  facial: { es: 'Facial', en: 'Facial' },
+  depilacion: { es: 'Depilación', en: 'Waxing' },
+  micropigmentacion: { es: 'Micropigmentación', en: 'Micropigmentation' }
+};
+
+const categoryList = ['manicuras', 'pedicuras', 'pestanas', 'facial', 'depilacion', 'micropigmentacion'];
+
 function Services() {
   const { language, t } = useLanguage();
-  const [services, setServices] = useState(null);
+  const [servicesData, setServicesData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('manicuras');
 
   useEffect(() => {
     axios.get(`${API}/services`)
       .then(function(res) {
-        setServices(res.data);
+        setServicesData(res.data);
         setLoading(false);
       })
-      .catch(function(err) {
-        console.error('Error:', err);
+      .catch(function() {
         setLoading(false);
       });
   }, []);
 
-  if (loading || !services) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-cream">
         <div className="animate-spin rounded-full h-12 w-12 border-4 border-gold border-t-transparent"></div>
@@ -33,44 +43,7 @@ function Services() {
     );
   }
 
-  const categories = Object.keys(services);
-  const currentService = services[activeCategory];
-
-  function renderCategories() {
-    return categories.map(function(category) {
-      const service = services[category];
-      const isActive = activeCategory === category;
-      return (
-        <button
-          key={category}
-          onClick={function() { setActiveCategory(category); }}
-          className={`px-4 py-2 rounded-full border transition-all duration-300 text-sm ${
-            isActive ? 'bg-gold text-white border-gold' : 'border-cream-300 text-brown hover:border-gold'
-          }`}
-          data-testid={`tab-${category}`}
-        >
-          {language === 'es' ? service.title_es : service.title_en}
-        </button>
-      );
-    });
-  }
-
-  function renderServiceItems() {
-    if (!currentService || !currentService.items) return null;
-    return currentService.items.map(function(item, index) {
-      return (
-        <div
-          key={index}
-          className="flex items-center justify-between py-4 border-b border-cream-200 last:border-0 group hover:bg-cream-100/50 px-4 -mx-4 transition-colors"
-        >
-          <span className="text-brown group-hover:text-gold transition-colors">
-            {language === 'es' ? item.name_es : item.name_en}
-          </span>
-          <span className="text-gold font-medium text-lg">{item.price}€</span>
-        </div>
-      );
-    });
-  }
+  const currentItems = servicesData && servicesData[activeCategory] ? servicesData[activeCategory].items : [];
 
   return (
     <div className="min-h-screen bg-cream" data-testid="services-page">
@@ -87,7 +60,22 @@ function Services() {
       <section className="py-16 md:py-24">
         <div className="max-w-5xl mx-auto px-4 md:px-8">
           <div className="flex flex-wrap justify-center gap-2 mb-12" data-testid="service-tabs">
-            {renderCategories()}
+            {categoryList.map(function(cat) {
+              const isActive = activeCategory === cat;
+              const label = categoryLabels[cat];
+              return (
+                <button
+                  key={cat}
+                  onClick={function() { setActiveCategory(cat); }}
+                  className={`px-4 py-2 rounded-full border transition-all duration-300 text-sm ${
+                    isActive ? 'bg-gold text-white border-gold' : 'border-cream-300 text-brown hover:border-gold'
+                  }`}
+                  data-testid={`tab-${cat}`}
+                >
+                  {language === 'es' ? label.es : label.en}
+                </button>
+              );
+            })}
           </div>
 
           <motion.div
@@ -101,11 +89,23 @@ function Services() {
                 <Sparkles className="w-6 h-6 text-gold" />
               </div>
               <h2 className="font-heading text-3xl text-brown">
-                {currentService && (language === 'es' ? currentService.title_es : currentService.title_en)}
+                {language === 'es' ? categoryLabels[activeCategory].es : categoryLabels[activeCategory].en}
               </h2>
             </div>
             <div>
-              {renderServiceItems()}
+              {currentItems.map(function(item, idx) {
+                return (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between py-4 border-b border-cream-200 last:border-0 hover:bg-cream-100/50 px-4 -mx-4 transition-colors"
+                  >
+                    <span className="text-brown hover:text-gold transition-colors">
+                      {language === 'es' ? item.name_es : item.name_en}
+                    </span>
+                    <span className="text-gold font-medium text-lg">{item.price}€</span>
+                  </div>
+                );
+              })}
             </div>
           </motion.div>
 
