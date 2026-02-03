@@ -1,0 +1,127 @@
+{
+  "identity": {
+    "persona": "E1",
+    "mission": "Create a bilingual, luxury beauty salon experience that feels personal, elegant, and high-end, avoiding generic 'spa' templates.",
+    "principles": [
+      "Fusion over Imitation: Mix classic ornate aesthetics with modern clean layouts.",
+      "Emotion First: Every interaction should feel like a pampering session.",
+      "Content is King: Let the before/after photos and service details shine.",
+      "Negative Space: Use generous padding to create a sense of luxury and calm."
+    ]
+  },
+  "theme": {
+    "mode": "light",
+    "palette": {
+      "primary": "#D4AF37",
+      "primary_foreground": "#FFFFFF",
+      "secondary": "#F9F5F0",
+      "secondary_foreground": "#2D2420",
+      "accent": "#E8DCCA",
+      "accent_foreground": "#2D2420",
+      "background": "#FDFBF7",
+      "foreground": "#2D2420",
+      "muted": "#F2EBE0",
+      "muted_foreground": "#6B5D54",
+      "card": "#FFFFFF",
+      "card_foreground": "#2D2420",
+      "border": "#E6DFD5",
+      "input": "#F2EBE0",
+      "ring": "#D4AF37"
+    },
+    "gradients": {
+      "gold_shimmer": "linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #D4AF37 100%)",
+      "soft_glow": "radial-gradient(circle at center, #FFF0F5 0%, #FDFBF7 100%)"
+    }
+  },
+  "typography": {
+    "font_family": {
+      "heading": ["Playfair Display", "serif"],
+      "body": ["Manrope", "sans-serif"],
+      "accent": ["Cormorant Garamond", "serif"]
+    },
+    "scale": {
+      "h1": "text-5xl md:text-7xl font-medium tracking-tight",
+      "h2": "text-4xl md:text-5xl font-medium tracking-tight",
+      "h3": "text-2xl md:text-3xl font-medium",
+      "body": "text-base md:text-lg leading-relaxed",
+      "caption": "text-sm tracking-widest uppercase"
+    }
+  },
+  "layout": {
+    "container": "max-w-7xl mx-auto px-6 md:px-12",
+    "spacing": {
+      "section_padding": "py-20 md:py-32",
+      "element_gap": "gap-8 md:gap-12"
+    },
+    "grid_strategies": [
+      {
+        "name": "The Gallery Wall",
+        "description": "Masonry layout for work samples, mixing vertical and horizontal shots.",
+        "classes": "columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8"
+      },
+      {
+        "name": "The Service Menu",
+        "description": "Elegant list with dotted leaders or gold separators.",
+        "classes": "grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8"
+      }
+    ]
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#D4AF37] text-white rounded-full px-8 py-4 hover:bg-[#B5952F] transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 font-medium tracking-wide",
+      "secondary": "bg-transparent border border-[#D4AF37] text-[#D4AF37] rounded-full px-8 py-4 hover:bg-[#D4AF37] hover:text-white transition-all duration-300 font-medium tracking-wide",
+      "whatsapp": "bg-[#25D366] text-white rounded-full px-6 py-3 hover:bg-[#128C7E] transition-all duration-300 shadow-md flex items-center gap-2"
+    },
+    "cards": {
+      "service": "bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-transparent hover:border-[#D4AF37]/20 group",
+      "testimonial": "bg-[#F9F5F0] p-8 rounded-2xl relative"
+    },
+    "inputs": {
+      "default": "bg-white border border-[#E6DFD5] rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent outline-none transition-all"
+    }
+  },
+  "visual_enhancers": {
+    "textures": [
+      "noise-overlay: opacity-5 pointer-events-none fixed inset-0 z-50",
+      "gold-dust: subtle particle effect in hero section"
+    ],
+    "decorations": [
+      "Ornate dividers (SVG)",
+      "Soft blur circles in background (bg-[#F3E5AB]/20 blur-3xl)"
+    ]
+  },
+  "media": {
+    "image_urls": {
+      "hero_bg": "https://images.unsplash.com/photo-1595436790404-ae5494edcf00?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "contact_bg": "https://images.unsplash.com/photo-1708459688387-403434955f3c?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "service_manicure": "https://images.unsplash.com/photo-1672815554809-37e355eddd24?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "service_facial": "https://images.unsplash.com/photo-1670201203614-cdb9b8fdf4c3?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "client_business_card": "https://customer-assets.emergentagent.com/job_a6a0678e-59b4-4285-ad29-5f51859be8f2/artifacts/uvcccp3u_WhatsApp%20Image%202026-02-03%20at%2008.46.00.jpeg",
+      "client_nail_after": "https://customer-assets.emergentagent.com/job_a6a0678e-59b4-4285-ad29-5f51859be8f2/artifacts/azph45qx_WhatsApp%20Image%202026-02-03%20at%2008.49.41%20%281%29.jpeg",
+      "client_nail_before": "https://customer-assets.emergentagent.com/job_a6a0678e-59b4-4285-ad29-5f51859be8f2/artifacts/zf7cikrb_WhatsApp%20Image%202026-02-03%20at%2008.49.41.jpeg",
+      "client_micro": "https://customer-assets.emergentagent.com/job_a6a0678e-59b4-4285-ad29-5f51859be8f2/artifacts/kp74lvrz_WhatsApp%20Image%202026-02-03%20at%2008.53.19.jpeg"
+    },
+    "icons": "Lucide React (default) or Phosphor Icons (Thin weight) for elegance."
+  },
+  "accessibility": {
+    "contrast_check": "Ensure gold text is dark enough on light backgrounds. Use #B5952F for text if #D4AF37 is too light.",
+    "reduced_motion": "Disable parallax and smooth scroll for prefers-reduced-motion."
+  },
+  "instructions_to_main_agent": [
+    "1. Install 'lucide-react' and 'framer-motion' if not present.",
+    "2. Configure Tailwind with the custom colors and fonts defined above.",
+    "3. Create a 'Layout' component that handles the bilingual toggle and navigation.",
+    "4. Use the 'client_business_card' image as a reference for the price list data structure.",
+    "5. Implement the 'Gallery' with a 'Before/After' slider component for the nail and micro work.",
+    "6. Ensure the 'Contact' section includes a direct WhatsApp link: https://wa.me/34639424658",
+    "7. Use 'Playfair Display' for all headings to establish the brand voice.",
+    "8. Add a subtle 'gold shimmer' effect to the primary buttons on hover."
+  ],
+  "universal_guidelines": [
+    "Avoid generic 'AI slop' designs.",
+    "Use 2-3x more spacing than typical.",
+    "Every interaction needs micro-animations.",
+    "Use 'sonner' for toasts.",
+    "All interactive elements MUST include 'data-testid'."
+  ]
+}
