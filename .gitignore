@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Emergent / agent scaffolding (do not commit)
+.emergent/
+
 # IDE and editors
 .idea/
 .vscode/
